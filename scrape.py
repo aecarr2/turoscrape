@@ -22,17 +22,16 @@ turo_search.click()
 
 # enter the location and datetime
 turo_search.send_keys("dallas")
-time.sleep(5)
 turo_search.send_keys(Keys.TAB)
 
-time.sleep(10)
 
-start = driver.find_element(By.CSS_SELECTOR,'body > div:nth-child(25) > div > section.days > div.day.col-1-7.selected.boundary-from')
-start.click()
+start = driver.find_element_by_id('js-searchFormExpandedStartDate')
+driver.execute_script("arguments[0].value = '08272018';", start)
 
 driver.find_element_by_id('js-searchFormExpandedStartTime').click()
 
-driver.find_element_by_id('js-searchFormExpandedEndDate').click()
+end = driver.find_element_by_id('js-searchFormExpandedEndDate')
+driver.execute_script("arguments[0].value = '08312018';", end)
 
 driver.find_element_by_id('js-searchFormExpandedEndTime').click()
 
