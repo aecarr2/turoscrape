@@ -11,9 +11,13 @@ import time
 url = "https://turo.com/"
 
 # create a new Chrome session
-# moved chromewebdriver to C:\Windows folder - PATH env var was incorrect ?
-driver = webdriver.Chrome()
-time.sleep(5)
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("--incognito")
+chrome_options.add_argument('--disable-application-cache')
+chrome_options.add_argument('media-cache-size=1')
+chrome_options.add_argument('disk-cache-size=1')
+driver = webdriver.Chrome(chrome_options=chrome_options)
+time.sleep(10)
 driver.get(url) 
 
 # find the turo search bar and click into it
@@ -24,18 +28,29 @@ turo_search.click()
 turo_search.send_keys("dallas")
 turo_search.send_keys(Keys.TAB)
 
-
 start = driver.find_element_by_id('js-searchFormExpandedStartDate')
 driver.execute_script("arguments[0].value = '08272018';", start)
 
-driver.find_element_by_id('js-searchFormExpandedStartTime').click()
+# driver.find_element_by_id('js-searchFormExpandedStartTime')
 
 end = driver.find_element_by_id('js-searchFormExpandedEndDate')
 driver.execute_script("arguments[0].value = '08312018';", end)
 
-driver.find_element_by_id('js-searchFormExpandedEndTime').click()
-
+# driver.find_element_by_id('js-searchFormExpandedEndTime')
 
 # search 
 turo_search.submit()
+time.sleep(5)
 
+#This code will scroll down to the end
+while True:
+	try:
+		driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+		break
+	except:
+		pass
+
+post_elems = driver.find_elements_by_class_name("vehicleCard")
+
+for link in post_elems:
+    print (link.text)
